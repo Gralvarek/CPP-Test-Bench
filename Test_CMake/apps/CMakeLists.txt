@@ -1,0 +1,3 @@
+add_executable(Test_CMake Test_CMake.cpp)
+
+target_link_libraries(Test_CMake print_library)
