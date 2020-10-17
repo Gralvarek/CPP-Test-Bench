@@ -4,7 +4,7 @@
 
 #include "NetCommon.hpp"
 #include "NetMessage.hpp"
-
+#include "NetMessageType.hpp"
 
 
 #endif // !NET_H
