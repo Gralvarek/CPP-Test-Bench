@@ -71,11 +71,12 @@ namespace TestTDDTests
 		TEST_METHOD(CannotHavePositionGreaterThanPlayField)
 		{
 			Shape shape(Shape::ShapeType::Straight);
-
+			/*
 			auto is_smaller_than_play_field = [](const Shape::ShapePosition& shape)
 			{
-				return (shape)
-			}
+				return (shape);
+			};
+			*/
 		}
 	};
 
