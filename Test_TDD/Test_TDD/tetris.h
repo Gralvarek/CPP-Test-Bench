@@ -61,52 +61,6 @@ private:
 
 
 
-
-
-
-class State
-{
-public:
-	enum class StateType : uint32_t
-	{
-		Start,
-		MainMenu,
-		GameScreen,
-		End
-	};
-	State(const StateType& id);
-
-	StateType GetStateType() const;
-
-	friend bool operator==(const State& lhs, const State& rhs);
-	friend bool operator<(const State& lhs, const State& rhs);
-private:
-	StateType m_id;
-};
-	
-class StateManager
-{
-public:
-	StateManager() = default;
-
-	void Add(const State& state);
-	bool Remove(const State& state);
-	bool MoveToNextState(const State& state);
-
-	int Size();
-private:
-	std::set<State> m_states;
-};
-
-
-
-
-
-
-
-
-
-
 Playfield::Playfield(uint32_t h, uint32_t w)
 	:	m_height(h), m_width(w)
 {
@@ -147,75 +101,6 @@ inline Shape::ShapePosition Shape::GetPosition() const
 	return m_position;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-State::State(const StateType& id)
-	:	m_id(id)
-{
-
-}
-
-inline State::StateType State::GetStateType() const
-{
-	return m_id;
-}
-
-inline bool operator==(const State& lhs, const State& rhs)
-{
-	return lhs.GetStateType() == rhs.GetStateType();
-}
-
-inline bool operator<(const State& lhs, const State& rhs)
-{
-	return lhs.GetStateType() < rhs.GetStateType();
-}
-
-
-
-
-
-
-
-
-void StateManager::Add(const State& state)
-{
-	m_states.insert(state);
-}
-
-bool StateManager::Remove(const State& state)
-{
-	auto it = std::find(m_states.begin(), m_states.end(), state);
-	bool state_exists = (it != m_states.end());
-	m_states.erase(it, m_states.end());
-	return state_exists;
-}
-
-bool StateManager::MoveToNextState(const State& state)
-{
-	auto it = std::find(m_states.begin(), m_states.end(), state);
-	bool state_exists = (it != m_states.end());
-	if (state_exists)
-		return true;
-	else
-		return false;
-}
-
-
-int StateManager::Size()
-{
-	return m_states.size();
-}
 
 
 #endif // !TETRIS_H

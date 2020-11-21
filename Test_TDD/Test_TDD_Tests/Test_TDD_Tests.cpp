@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "tetris.h"
+#include "state.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -81,43 +82,52 @@ namespace TestTDDTests
 	};
 
 
-	TEST_CLASS(StateManagerTests)
+	TEST_CLASS(StateMachineTests)
 	{
+		TEST_METHOD_INITIALIZE(StateMachineGraph)
+		{
+			std::unordered_map<State, > map =
+			{
+				{StateType::START, }
+			};
+			
+		}
+
 		TEST_METHOD(CanHaveStatesAddedAndRemoved)
 		{
-			StateManager sm;
-			sm.Add(State::StateType::Start);
-			Assert::AreEqual(sm.Remove(State::StateType::Start), true);
+			StateMachine sm(map);
+			sm.Add(StateType::START);
+			Assert::AreEqual(sm.Remove(StateType::START), true);
 		}
 
 		TEST_METHOD(CanHaveStatesRemovedOnlyWhenPreviouslyAdded)
 		{
-			StateManager sm;
-			Assert::AreEqual(sm.Remove(State::StateType::Start), false);
-			sm.Add(State::StateType::End);
-			Assert::AreEqual(sm.Remove(State::StateType::End), true);
-			Assert::AreEqual(sm.Remove(State::StateType::End), false);
+			StateMachine sm(map);
+			Assert::AreEqual(sm.Remove(StateType::START), false);
+			sm.Add(StateType::END);
+			Assert::AreEqual(sm.Remove(StateType::END), true);
+			Assert::AreEqual(sm.Remove(StateType::END), false);
 
 		}
 		TEST_METHOD(CanOnlyHaveUniqueStates)
 		{
-			StateManager sm;
-			sm.Add(State::StateType::Start);
-			sm.Add(State::StateType::Start);
+			StateMachine sm;
+			sm.Add(StateType::START);
+			sm.Add(StateType::START);
 			Assert::AreEqual(sm.Size(), 1);
-			sm.Add(State::StateType::End);
+			sm.Add(StateType::END);
 			Assert::AreEqual(sm.Size(), 2);
 		}
 
 		TEST_METHOD(CanMoveBetweenStates)
 		{
-			StateManager sm;
-			Assert::IsFalse(sm.MoveToNextState(State::StateType::Start));
-			sm.Add(State::StateType::Start);
-			Assert::IsTrue(sm.MoveToNextState(State::StateType::Start));
-			sm.Add(State::StateType::End);
-			Assert::IsTrue(sm.MoveToNextState(State::StateType::End));
-			Assert::IsTrue(sm.MoveToNextState(State::StateType::Start));
+			StateMachine sm;
+			Assert::IsFalse(sm.MoveToNextState(StateType::START));
+			sm.Add(StateType::START);
+			Assert::IsTrue(sm.MoveToNextState(StateType::START));
+			sm.Add(StateType::END);
+			Assert::IsTrue(sm.MoveToNextState(StateType::END));
+			Assert::IsTrue(sm.MoveToNextState(StateType::START));
 		}
 	};
 
@@ -130,13 +140,13 @@ namespace TestTDDTests
 
 		TEST_METHOD(CanHaveStateTypes)
 		{
-			State state(State::StateType::Start);
-			auto is_type = [&state](const State::StateType& state_type)
+			State state(StateType::START);
+			auto is_type = [&state](const StateType& state_type)
 			{
 				return state.GetStateType() == state_type;
 			};
-			Assert::IsTrue(is_type(State::StateType::Start));
-			Assert::IsFalse(is_type(State::StateType::End));
+			Assert::IsTrue(is_type(StateType::START));
+			Assert::IsFalse(is_type(StateType::END));
 		}
 	};
 }
